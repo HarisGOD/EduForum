@@ -1,0 +1,212 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js">
+		</script>
+		<style>
+		.container{
+margin-left:12%;margin-right:12%;background-color:#9F958b;text-align: center;
+}
+.vitraj{
+background: rgb(253,187,45);
+background: linear-gradient(90deg, rgba(253,187,45,1) 0%, rgba(230,22,22,1) 50%, rgba(253,187,45,1) 100%);
+height:300px;
+}
+.card{
+width:44%;
+  display: inline-block;
+  vertical-align: middle;
+  background: repeating-linear-gradient(
+  135deg,
+  #F7F6F4,
+  #F7F6F4 4px,
+  #1F1E1E 3px,
+  #1F1E1E 6px
+);
+ height:100px;
+ padding:1% 1%;
+ border: 5px solid #786E62;
+ overflow:hidden
+}
+a{
+  color: #423;
+  background-color: transparent;
+  text-decoration: none;
+}
+a:hover {
+  color: green;
+  background-color: transparent;
+  text-decoration: none;
+}
+.name{
+background-color:rgba(247,246,244,0.9);text-align: left;margin-top:-1%;font-family: Trebuchet MS, sans-serif, Verdana;
+}
+.content{
+	background-color:rgba(120,110,98,0.9);text-align: left;margin-top:-15px;font-family: Trebuchet MS, sans-serif, Verdana;
+}
+.data{
+background-color:rgba(247,246,244,0.9);
+margin-left:60%;
+width:40%;font-family: Trebuchet MS, sans-serif, Verdana;
+}
+.postname{
+font-size:25px;font-family: Trebuchet MS, sans-serif, Verdana;background-color:#ffcce7;width:80%;height:40px;color:#4d5198;
+}
+.date{
+font-family: Trebuchet MS, sans-serif, Verdana;background-color:#ffcce7;margin-top:-65px;width:20%;float:right;font-size:15px;height:40px;text-align:left;color:#4d5198
+}
+.row{
+font-size:25px;background-color:#81b7d2;margin-top:-25px;color:#3c4087;padding:4px 10px
+}
+.read-more {
+width:40%;height:18px;background-color:059bd9;color:#4d5198;font-family: Trebuchet MS, sans-serif, Verdana;border: none;cursor: pointer;margin-left:30%;height:30px;font-size:20px
+}
+.hover:hover {
+  background-color: #9bc472;
+  color: 4d5198;
+  font-size:23px
+}
+body{
+  background-color:#333;
+  background-attachment: fixed;
+  background-margin-left:-50%;background-position: -0px -200px;background-size: 100%;
+background-image: url(finishedBG2.png);
+}
+.menuPart{
+border: 4px double black;flex:1;
+}
+a:link {
+  color: #f4f4ef;
+  text-decoration: none;
+}
+a:visited {
+  color: #f4f4ef;
+  text-decoration: none;
+}
+a:hover {
+  color: #4BC6B9;
+  text-decoration: none;
+}
+a:active {
+  color: #73C1C6;
+  text-decoration: none;
+}
+.menuContent{
+height:72px;background-color:rgba(255,255,255,0.1);text-align:center;font-family: Trebuchet MS, sans-serif, Verdana;
+}
+.menu{
+margin-left:-8px;margin-right:-8px;background-color:#1f1e1e;height:80px;color:#f4f4ef;font-size:20px;display:flex;flex-direction:row;
+</style>
+	</head>
+	<!--  
+	<script>
+	$(window).scroll(function() {
+		   if($(window).scrollTop() + $(window).height() == $(document).height()){
+		       $.get("/getPostData?name=1",function(data){
+					console.log(data);
+					
+					let postBobydy = document.createElement('div');
+					postBobydy.className = 'alert';
+					postBobydy.innerHTML = data.name+'    '+    data.content+'   '+ '  '+data.created+' '+    data.id;
+					
+					document.body.append(postBobydy);
+				})
+		   }
+		});
+	</script>-->
+	
+	<script>
+	var YE = 1;
+	var isOk=true;
+	const btn ='read more';
+	$(window).scroll(function() {
+		   if($(window).scrollTop() + $(window).height() == $(document).height()){
+		       $.get('/getPostById?ID='+YE,function(data){
+		    	   if(data.name==null){isOk=false;console.log('nulled')}
+		    	   if(isOk){
+		    		   console.log(isOk);
+		    		   console.log(data.name);
+		    		   
+		    		   //
+		    		   //let elements = document.getElementsByClassName('post');
+		    		    //console.log(elements[0].innerText.split('\n')[0]);
+		    		    //
+		    		    //let shortContet = '';
+						console.log(data);
+						YE = YE+1;
+						let sc = document.createElement('div');
+						sc.innerHTML=data.content;
+						let str = sc.getElementsByTagName('div');
+						console.log(str[0])
+						
+						
+						<!-- postBobydy.innerHTML = data.name+'    '+    data.content+'   '+ '  '+data.created+' '+    data.id;-->
+						str = '<div class="card"><p class="name"><a href="seepost/'+data.name+'">'+data.name+'</a></p><p class="content">'+str[0].innerText+'</p><p class="data">'+data.created+'</p></div>'
+						document.getElementById('container').insertAdjacentHTML('beforeend',str);
+					}
+		    	})
+		   }
+		});
+	</script>
+	 
+	<!-- Тут должны быть :
+	переменная текущей даты постов
+	получение поста по дате
+	в общем страниться будет получать посты по устареванию
+	TO-DO:
+	фильтры на странице-->
+	<body style="min-height:900px">
+<div class="menu"style="">
+
+<div class="menuPart" style="flex:1">
+<a th:href="@{/index}">
+<div class="menuContent">edu forum logo</div>
+</a>
+</div>
+
+<div class="menuPart" style="flex:2">
+<a th:href="@{/credits}">
+<div class="menuContent">credits</div>
+</a>
+</div>
+
+<div class="menuPart" style="flex:4">
+<a>
+<div class="menuContent"></div>
+</a>
+</div>
+
+<div class="menuPart" style="flex:1">
+<a href="/posts">
+<div class="menuContent">posts</div>
+</a>
+</div>
+
+<div class="menuPart" style="flex:3;display:flex">
+
+<a th:if="${isAuthorized == 'true'}" th:href="@{/newPost}" style="flex:2">
+<div class="menuContent">newpost</div>
+</a>
+<a th:if="${isAuthorized == 'true'}"href="@{/user}" style="flex:2">
+<div class="menuContent">profile</div>
+</a>
+<a th:if="${isAuthorized == 'true'}"href="/logout" style="flex:1">
+<div class="menuContent">logout</div>
+</a>
+
+<a th:if="${isAuthorized == 'false'}" th:href="@{/register}"style="flex:1">
+<div class="menuContent">register</div>
+</a>
+<a th:if="${isAuthorized == 'false'}" th:href="@{/login}"style="flex:1">
+<div class="menuContent">login</div>
+</a>
+</div>
+
+</div>
+<div class="vitraj"><img style='height: 100%; width: 100%; object-fit: contain'
+src="V2.jpg"></img></div>
+<div class="container" id="container">
+
+</div>
+</body>
+</html>

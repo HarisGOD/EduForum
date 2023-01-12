@@ -1,0 +1,17 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+   <head>
+      <meta charset="UTF-8" />
+      <title>imgtest</title>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js">
+		</script>
+   </head>
+   <body>
+   <img id="testimg" src="">
+   <script>
+   
+   document.getElementById('testimg').setAttribute('src','data:image/jpg;base64,'+'[[${img}]]')</script>
+   </body>
+   
+</html>
+ 

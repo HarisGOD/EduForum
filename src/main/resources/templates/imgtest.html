@@ -1,0 +1,9 @@
+
+<h1>Add image</h1>
+		<form method="post" enctype="multipart/form-data" action="/imgcarve">
+  			<label for="img">Select image:</label>
+  			<input type="file" id="img" name="img" accept="image/*">
+  			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+     		<input type="Submit">
+     	</form>		
+     				

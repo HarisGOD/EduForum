@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>maybe</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js">
+		</script>
+		
+
+</head>
+
+<body>
+
+<h1> YOU WRITED THIS:</h1>
+
+<div id="placeholder" th:text="${html}"></div>
+
+<h2> and writed this so bad...</h2>
+<p></p>
+<script>
+var a = document.getElementById("placeholder");
+var txt = a.innerText || a.textContent;
+document.getElementById("placeholder").innerHTML = txt;</script>
+</body>
+</html>

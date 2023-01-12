@@ -1,0 +1,210 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+		<script>
+		var YE = 1;
+		function add(){
+			$.get('/getPostDataByName?name='+'[[${postname}]]',function(data){
+	    		   console.log(data.name);
+	    		    //let elements = document.getElementsByClassName('post');
+	    		    //console.log(elements[0].innerText.split('\n')[0]);
+	    		    //
+	    		    //let shortContet = '';
+					
+					
+					<!-- postBobydy.innerHTML = data.name+'    '+    data.content+'   '+ '  '+data.created+' '+    data.id;-->
+					document.getElementById('leftside').insertAdjacentHTML('beforeend',data.content);
+				
+	    	})
+		};
+		function addPC(){
+			$.get('/getPCByPostnameAndIndex?postname='+'[[${postname}]]'+'&index='+YE,function(data){
+				if(data.login==null||data.login=='undefined'){
+					console.log(YE);
+				}
+				else{
+				console.log(data.Comment);
+				document.getElementById('markX').insertAdjacentHTML('beforeend','<div><div style="text-align:right">'+data.publicationDate+'</div><div style="color:black">'+data.login+'</div><p style="color:black">'+data.comment+'</p><hr></div>');
+				YE=YE+1;};
+			});
+			
+		};
+		</script>
+		<script> function check(){
+          return confirm("вы уверены?")}
+      </script>
+		<style>
+		.textShadow{text-shadow: 2px 2px 0 #423, 2px -2px 0 #423, -2px 2px 0 #423, -2px -2px 0 #423, 2px 0px 0 #423, 0px 2px 0 #423, -2px 0px 0 #423, 0px -2px 0 #423, 2px 2px 2px rgba(206,89,55,0);}
+		
+.container{
+margin-top:-0px;width=100%;margin-left:1%;margin-right:1%;font-size:18px;color:#373738;display: flex;flex-direction: row
+}
+.leftside{
+background-color: rgba(244, 244, 239, 0.9);flex:8;min-height:400px;max-width:75%
+}
+.rightside{
+  background: repeating-linear-gradient(
+  45deg,
+  #F7F6F4,
+  #F7F6F4 5px,
+  #423 3px,
+  #423 6px
+);
+flex:1;min-height:400px;
+
+}
+.name{
+background-color:rgba(247,246,244,0.9);text-align: left;margin-top:-1%;font-family: Trebuchet MS, sans-serif, Verdana;
+}
+.data{
+background-color:rgba(247,246,244,0.9);
+margin-left:60%;
+width:40%;font-family: Trebuchet MS, sans-serif, Verdana;
+}
+.font{
+font-family: Trebuchet MS, sans-serif, Verdana;
+}
+img{
+border: 0;
+height: 300px;
+}
+.menuPart{
+border: 4px double black;flex:1;
+}
+a:link {
+  color: #f4f4ef;
+  text-decoration: none;
+}
+a:visited {
+  color: #f4f4ef;
+  text-decoration: none;
+}
+a:hover {
+  color: #4BC6B9;
+  text-decoration: none;
+}
+a:active {
+  color: #73C1C6;
+  text-decoration: none;
+}
+.menuContent{
+height:72px;background-color:rgba(255,255,255,0.1);text-align:center;font-family: Trebuchet MS, sans-serif, Verdana;
+}
+.menu{
+margin-left:-8px;margin-right:-8px;background-color:#1f1e1e;height:80px;color:#f4f4ef;font-size:20px;display:flex;flex-direction:row;
+
+</style>
+		</head><body>
+<!-- <h1 class="textShadow"style="overflow:hidden;margin-top:-120px;font-family: Trebuchet MS, sans-serif, Verdana;font-size:380px;color:#FFF;margin-left: -36px;" th:text="${username}"></h1>
+<h2 class="textShadow"style="font-family: Trebuchet MS, sans-serif, Verdana;font-size:100px;color:#FFF;margin-top: -350px;margin-left: -10px;"></h2>
+ -->
+ <div class="menu"style="">
+
+<div class="menuPart" style="flex:1">
+<a th:href="@{/index}">
+<div class="menuContent">edu forum logo</div>
+</a>
+</div>
+
+<div class="menuPart" style="flex:2">
+<a th:href="@{/credits}">
+<div class="menuContent">credits</div>
+</a>
+</div>
+
+<div class="menuPart" style="flex:4">
+<a>
+<div class="menuContent"></div>
+</a>
+</div>
+
+<div class="menuPart" style="flex:1">
+<a href="/posts">
+<div class="menuContent">posts</div>
+</a>
+</div>
+
+<div class="menuPart" style="flex:3;display:flex">
+
+<a th:if="${isAuthorized == 'true'}" th:href="@{/newPost}" style="flex:2">
+<div class="menuContent">newpost</div>
+</a>
+<a th:if="${isAuthorized == 'true'}"href="@{/user}" style="flex:2">
+<div class="menuContent">profile</div>
+</a>
+<a th:if="${isAuthorized == 'true'}"href="/logout" style="flex:1">
+<div class="menuContent">logout</div>
+</a>
+
+<a th:if="${isAuthorized == 'false'}" th:href="@{/register}"style="flex:1">
+<div class="menuContent">register</div>
+</a>
+<a th:if="${isAuthorized == 'false'}" th:href="@{/login}"style="flex:1">
+<div class="menuContent">login</div>
+</a>
+</div>
+
+</div>
+<div style="width=100%;height=10px" ></div>
+<div class="container">
+<div id="rightside"class="rightside">
+</div>
+<div id="leftside"class="leftside">
+</div>
+<div id="rightside"class="rightside">
+<div th:if="${isOwner == 'true'}">
+      <form method="post" action="/delete-post" onsubmit="return check()">
+      	<input type="hidden" th:name="postname" th:value="${postname}">
+      	<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    	<button type="submit" name="action">удалить пост</button>
+</form>
+	<form method="get" action="/edit-post" onsubmit="return check()">
+      	<input type="hidden" th:name="postname" th:value="${postname}">
+      	<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    	<button type="submit" name="action">изменить пост</button>
+	</form>
+</div>
+</div>
+</div>
+
+<div th:if="${isAuthorized == 'true'}">
+
+<form method="POST" action="/addPComment">
+<input type="hidden" th:name="postname" th:value="${postname}">
+ <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+ <div class="commentTextArea"style="background-color:#423;display:flex;margin-left:1%;margin-right:1%;">
+<div style="flex:1"></div>
+<div style="flex:6;display:flex;flex-direction:row;">
+<textarea name="comment" style="flex:9;resize:none;"rows="10"> </textarea>
+<button style="flex:1"> отправить</button>
+</div>
+<div style="flex:1"></div>
+
+</div>
+
+</form>
+</div>
+
+<div class="loadComment">
+
+<div style="display:flex;margin-left:1%;margin-right:1%;">
+<div style="flex:1;background-color:#423">
+</div>
+<div id="markX" style="flex:6;rgb(244,244,239)">
+<hr>
+
+
+
+</div>
+
+<div style="flex:1;background-color:#423">
+</div>
+</div>
+
+<button style="width:98%;margin-left:1%;margin-right:1%;"  id="" onclick="addPC()"> загрузить комментарии ещё</button>
+</div>
+
+
+     		<script>add()</script>
+</body>
+</html>

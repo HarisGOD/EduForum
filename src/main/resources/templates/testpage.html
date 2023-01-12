@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<title>maybe</title>
+<link rel="stylesheet" href="/awesFont/fa/css/all.css" />
+<link rel="stylesheet" href="/RTA/richtext.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js">
+		</script>
+		<script src="/RTA/jquery.richtext.min.js"></script>
+		
+<head>
+</head>
+
+<body>
+
+<form action="" method="post" th:action="@{/richtext}">
+<textarea class="content" name="html" >dgsesfsr</textarea>
+<button style="height:16px;width:16px;text-align:left;">x</button>
+</form>
+<script>$('.content').richText();</script>
+
+<div class="post" ><div>gasdga<span style="font-weight: bold;">gsagsagga</span><span style="font-style: italic;"><span style="font-weight: bold;">gsagag</span><span style="text-decoration-line: underline; font-weight: bold;">asga</span><span style="text-decoration-line: underline;">asgasgaga</span><span style="font-weight: bold;"><span style="text-decoration-line: underline;">gas</span>ag</span></span></div><p><span style="font-style: italic;">gagag</span><span style="font-weight: bold;"><span style="font-style: italic;">sdd</span>g</span>ds</p><p><span style="font-weight: bold;">asdf</span>asfaf</p></div>
+    <script>
+    let elements = document.getElementsByClassName('post');
+    console.log(elements[0].innerText.split('\n')[0]);
+
+    </script>
+</body>
+</html>

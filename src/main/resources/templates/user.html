@@ -1,0 +1,229 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+		<style>.textShadow{text-shadow: 2px 2px 0 #423, 2px -2px 0 #423, -2px 2px 0 #423, -2px -2px 0 #423, 2px 0px 0 #423, 0px 2px 0 #423, -2px 0px 0 #423, 0px -2px 0 #423, 2px 2px 2px rgba(206,89,55,0);}
+		
+.container{
+margin-top:-0px;width=100%;margin-left:1%;margin-right:1%;font-size:18px;color:#373738;display: flex;flex-direction: row
+}
+.leftside{
+background-color: rgba(244, 244, 239, 0.9);flex:3;min-height:400px;max-width:75%
+}
+.rightside{
+  background: repeating-linear-gradient(
+  45deg,
+  #F7F6F4,
+  #F7F6F4 5px,
+  #423 3px,
+  #423 6px
+);
+flex:1;min-height:400px;
+
+}
+.userImg{
+height:128px;
+width:128px;
+float:left;
+}
+.card{
+width:90%;
+  display: inline-block;
+  vertical-align: middle;
+  background: repeating-linear-gradient(
+  135deg,
+  #F7F6F4,
+  #F7F6F4 4px,
+  #1F1E1E 3px,
+  #1F1E1E 6px
+);
+ height:100px;
+ padding:1% 1%;
+ border: 5px solid #786E62;
+ overflow:hidden
+}
+.name{
+background-color:rgba(247,246,244,0.9);text-align: left;margin-top:-1%;font-family: Trebuchet MS, sans-serif, Verdana;
+}
+.content{
+	background-color:rgba(120,110,98,0.9);text-align: left;margin-top:-15px;font-family: Trebuchet MS, sans-serif, Verdana;
+}
+.data{
+background-color:rgba(247,246,244,0.9);
+margin-left:60%;
+width:40%;font-family: Trebuchet MS, sans-serif, Verdana;
+}
+.pos{}
+.font{
+font-family: Trebuchet MS, sans-serif, Verdana;
+}
+
+.link{
+  color: #423;
+  background-color: transparent;
+  text-decoration: none;
+}
+a:hover {
+  color: green;
+  background-color: transparent;
+  text-decoration: none;
+}
+.menuPart{
+border: 4px double black;flex:1;
+}
+a:link {
+  color: #1f1fef;
+  text-decoration: none;
+}
+a:visited {
+  color: #1f1fef;
+  text-decoration: none;
+}
+a:hover {
+  color: #4BC6B9;
+  text-decoration: none;
+}
+a:active {
+  color: #73C1C6;
+  text-decoration: none;
+}
+.menuContent{
+height:72px;background-color:rgba(255,255,255,0.1);text-align:center;font-family: Trebuchet MS, sans-serif, Verdana;
+}
+.menu{
+margin-left:-8px;margin-right:-8px;background-color:#1f1e1e;height:80px;color:#f4f4ef;font-size:20px;display:flex;flex-direction:row;
+
+</style>
+<script>
+	var YE = 1;
+	var isOk=true;
+	function sleep(ms) {
+	    return new Promise(resolve => setTimeout(resolve, ms));
+	}
+	//$(document).ready(function() { foo();} );
+	function foo() {
+		   
+		       $.get('/getPostByUsernameAndIndexByBack?Login='+'[[${login}]]'+'&Index='+YE,function(data){
+		    	   if(data.name==null){isOk=false;console.log('nulled')}
+		    	   if(isOk){
+		    		   console.log(isOk);
+		    		   console.log(data.name);
+		    		   
+		    		   //
+		    		   //let elements = document.getElementsByClassName('post');
+		    		    //console.log(elements[0].innerText.split('\n')[0]);
+		    		    //
+		    		    //let shortContet = '';
+						console.log(data);
+						YE=YE+1;
+						let sc = document.createElement('div');
+						sc.innerHTML=data.content;
+						let str = sc.getElementsByTagName('div');
+						console.log(str[0])
+						
+						
+						<!-- postBobydy.innerHTML = data.name+'    '+    data.content+'   '+ '  '+data.created+' '+    data.id;-->
+						str = '<div class="card"><p class="name"><a style="link" href="seepost/'+data.name+'">'+data.name+'</a></p><p class="content">'+str[0].innerText.slice(0,20)+'...</p><p class="data">'+data.created+'</p></div>'
+						document.getElementById('buttonMore').insertAdjacentHTML('beforebegin',str);
+					}else
+					{
+						
+					};
+		    	})
+		   
+		};
+	function addForm(){
+		document.getElementById('editUsername').remove()
+		document.getElementById('withUsername').insertAdjacentHTML('beforeend','<form id="deletionalForm" method="post" action="/updateUsername"><input type="text" id="username" name="username"><input type="hidden" name="'+'[[${_csrf.parameterName}]]'+'"value="'+'[[${_csrf.token}]]'+'"/><input type="Submit"></form><button id="deletionalButton" onclick="removeForm()">X</button>');
+	};
+	function removeForm(){
+		document.getElementById('deletionalForm').remove();document.getElementById('deletionalButton').remove();
+		document.getElementById('withUsername').insertAdjacentHTML('beforeend','<button id="editUsername"class="font" onclick="addForm()">изменить свой псевдоним</button>');
+	};
+	function addImgForm(){
+		document.getElementById('deletionalAddImgButton').remove()
+		document.getElementById('userImgMark').insertAdjacentHTML('beforeend','<form id="deletionalImgForm"method="post" enctype="multipart/form-data" action="/imgcarve"><input type="file" id="img" name="img" accept="image/*"><input type="hidden" name="'+'[[${_csrf.parameterName}]]'+'"value="'+'[[${_csrf.token}]]'+'"/><input type="Submit"></form><button id="deletionalImgButton" onclick="removeImgForm()">X</button>');
+	};
+	function removeImgForm(){
+		document.getElementById('deletionalImgForm').remove();document.getElementById('deletionalImgButton').remove();
+		document.getElementById('userImgMark').insertAdjacentHTML('beforeend','<button id="deletionalAddImgButton" class="font" style="width:100%" onclick="addImgForm()">выбрать новое изображение</button>');
+	}
+	</script>
+		</head><body>
+<div class="menu"style="">
+
+<div class="menuPart" style="flex:1">
+<a th:href="@{/index}">
+<div class="menuContent">edu forum logo</div>
+</a>
+</div>
+
+<div class="menuPart" style="flex:2">
+<a th:href="@{/credits}">
+<div class="menuContent">credits</div>
+</a>
+</div>
+
+<div class="menuPart" style="flex:4">
+<a>
+<div class="menuContent"></div>
+</a>
+</div>
+
+<div class="menuPart" style="flex:1">
+<a href="/posts">
+<div class="menuContent">posts</div>
+</a>
+</div>
+
+<div class="menuPart" style="flex:3;display:flex">
+
+<a th:if="${isAuthorized == 'true'}" th:href="@{/newPost}" style="flex:2">
+<div class="menuContent">newpost</div>
+</a>
+<a th:if="${isAuthorized == 'true'}"href="@{/user}" style="flex:2">
+<div class="menuContent">profile</div>
+</a>
+<a th:if="${isAuthorized == 'true'}"href="/logout" style="flex:1">
+<div class="menuContent">logout</div>
+</a>
+
+<a th:if="${isAuthorized == 'false'}" th:href="@{/register}"style="flex:1">
+<div class="menuContent">register</div>
+</a>
+<a th:if="${isAuthorized == 'false'}" th:href="@{/login}"style="flex:1">
+<div class="menuContent">login</div>
+</a>
+</div>
+
+</div>
+<h1 class="textShadow"style="overflow:hidden;margin-top:-0px;font-family: Trebuchet MS, sans-serif, Verdana;font-size:380px;color:#FFF;margin-left: -36px;" th:text="${username}"> user</h1>
+<h2 class="textShadow"style="font-family: Trebuchet MS, sans-serif, Verdana;font-size:100px;color:#FFF;margin-top: -350px;margin-left: -10px;">Ваш профиль</h2>
+<div style="width=100%;height=10px" ></div>
+<div class="container">
+<div class="leftside">
+<div id="userImgMark" class="userImg">
+<img id="testimg" class="userImg"src="">
+   <script>
+   
+   document.getElementById('testimg').setAttribute('src','data:image/jpg;base64,'+'[[${img}]]')</script>
+   <button id="deletionalAddImgButton" class="font" style="width:100%" onclick="addImgForm()">выбрать новое изображение</button>
+</div>   
+<p id="withUsername"> <nobr class="font" th:text="${username}"></nobr><button id="editUsername"class="font" onclick="addForm()">изменить мой псевдоним</button></p>
+<p class="font" th:text="${created}">2023-01-6</p>
+
+<form action="" method="post" th:action="@{/logout}">
+<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+<button style="height:16px;text-align:left;">выйти из аккаунта</button>
+</form>
+</div>
+<div id="rightside"class="rightside">
+<div style="background-color:rgba(255,255,255,0.9);display:flex;flex-direction: row; height:30px;"class="font">
+<p style="flex:1;margin-top:-1px">ваши посты </p><form th:action="@{/newPost}" target="_blank"><button style="flex:1">новый пост</button></form>
+</div>
+<button id="buttonMore" onclick="foo()" style="width:100%">загрузить ещё</button>
+
+</div>
+</div>
+     		<script>foo();</script>
+</body>
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<style>
+img {
+}
+.container{
+margin-top:-0px;width=100%;margin-left:1%;margin-right:1%;font-size:18px;color:#373738;display: flex;flex-direction: row
+}
+.leftside{
+background-color: rgba(244, 244, 239, 0.9);flex:8;min-height:400px;max-width:75%
+}
+.rightside{
+  background: repeating-linear-gradient(
+  45deg,
+  #F7F6F4,
+  #F7F6F4 5px,
+  #423 3px,
+  #423 6px
+);
+flex:1;min-height:400px;
+
+}
+.font{
+font-family: Trebuchet MS, sans-serif, Verdana;
+}
+.menuPart{
+border: 4px double black;flex:1;
+}
+a:link {
+  color: #f4f4ef;
+  text-decoration: none;
+}
+a:visited {
+  color: #f4f4ef;
+  text-decoration: none;
+}
+a:hover {
+  color: #4BC6B9;
+  text-decoration: none;
+}
+a:active {
+  color: #73C1C6;
+  text-decoration: none;
+}
+.menuContent{
+height:72px;background-color:rgba(255,255,255,0.1);text-align:center;font-family: Trebuchet MS, sans-serif, Verdana;
+}
+.menu{
+margin-left:-8px;margin-right:-8px;background-color:#1f1e1e;height:80px;color:#f4f4ef;font-size:20px;display:flex;flex-direction:row;
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script>
+
+var step=0;
+var x1 =0;var y1 =0;var x2 =0;var y2 =0;var l;
+
+function img() {
+    var canvas = document.getElementById("myCanvas");
+    var ctx = canvas.getContext("2d");
+    var img = document.getElementById("scream");
+   ctx.drawImage(img, 0, 0);
+};
+function drawImageScaled() {
+	   var canvas = document.getElementById("myCanvas");
+	   var ctx = canvas.getContext("2d");
+	   var img = document.getElementById("scream");
+	   var hRatio = canvas.width  / img.width    ;
+	   var vRatio =  canvas.height / img.height  ;
+	   var ratio  = Math.min ( hRatio, vRatio );
+	   var centerShift_x = 0;//( canvas.width - img.width*ratio ) / 2;
+	   var centerShift_y = 0;//( canvas.height - img.height*ratio ) / 2;  
+	   ctx.clearRect(0,0,canvas.width, canvas.height);
+	   ctx.drawImage(img, 0,0, img.width, img.height,
+	                      centerShift_x,centerShift_y,img.width*ratio, img.height*ratio);  
+	}
+;
+function gcp(canvas, event) {
+var x, y;
+
+canoffset = $(canvas).offset();
+x = event.clientX + document.body.scrollLeft + document.documentElement.scrollLeft - Math.floor(canoffset.left);
+y = event.clientY + document.body.scrollTop + document.documentElement.scrollTop - Math.floor(canoffset.top) + 1;
+
+return [x,y];
+};
+
+function bySteps(e){
+	var canvas = document.getElementById("myCanvas");
+	var canvasH = canvas.getAttribute('height');
+	var canvasW = canvas.getAttribute('width');
+	var maxH=300;
+	var maxW=300;
+	maxH=canvasH.substring(0, canvasH.length - 2);
+	maxW=canvasW.substring(0, canvasW.length - 2);
+	
+    var ctx = canvas.getContext("2d");
+ 	ctx.fillStyle = "rgba(10,10,10,0.3)";
+    if (step==0){x1=gcp(canvas,e)[0];y1=gcp(canvas,e)[1];console.log(x1+' '+y1);step=1}
+    else{if(step==1){ x2=gcp(canvas,e)[0];y2=gcp(canvas,e)[1];step=step+1;console.log(x2+' '+y2);
+    	//if(x2>299){l=299-x1;}
+    	//else{
+    	//	if(y2>299){l=299-y1;}
+    	//	else{if(x2-x1>y2-y1){l=x2-x1;}else{l=y2-y1}; } ;
+    	//};
+    	if(x2-x1>y2-y1){l=x2-x1}else{l=y2-y1};
+    	if(y1+l>maxH-1){l-=y1+l-maxH-1}else{
+    		if(x1+l>maxW){l-=x1+l-maxW-1}
+    		else{
+    			
+    		};
+    	};
+    	
+	    
+	    ctx.fillRect(x1, y1, l,l);
+		document.getElementById('x1').setAttribute('value',x1);document.getElementById('x2').setAttribute('value',l);
+		document.getElementById('y1').setAttribute('value',y1);document.getElementById('y2').setAttribute('value',l);
+		
+	    
+	    document.getElementById('markX').insertAdjacentHTML('beforeend','<button id="b1" type="submit" form="nform" value="Submit">accept</button>');
+	    document.getElementById('markX').insertAdjacentHTML('beforeend','<button id="b2" onclick="clearCanvas()">cancel</button>');
+	    }
+    }
+};
+function clearCanvas(){
+	var canvas = document.getElementById("myCanvas");
+    var ctx = canvas.getContext("2d");
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	step=0;
+	drawImageScaled();
+	document.getElementById('b1').remove();document.getElementById('b2').remove();
+};
+</script>
+</head>
+<body>
+<div class="menu"style="">
+
+<div class="menuPart" style="flex:1">
+<a th:href="@{/index}">
+<div class="menuContent">edu forum logo</div>
+</a>
+</div>
+
+<div class="menuPart" style="flex:2">
+<a th:href="@{/credits}">
+<div class="menuContent">credits</div>
+</a>
+</div>
+
+<div class="menuPart" style="flex:4">
+<a>
+<div class="menuContent"></div>
+</a>
+</div>
+
+<div class="menuPart" style="flex:1">
+<a href="/posts">
+<div class="menuContent">posts</div>
+</a>
+</div>
+
+<div class="menuPart" style="flex:3;display:flex">
+
+<a th:if="${isAuthorized == 'true'}" th:href="@{/newPost}" style="flex:2">
+<div class="menuContent">newpost</div>
+</a>
+<a th:if="${isAuthorized == 'true'}"href="@{/user}" style="flex:2">
+<div class="menuContent">profile</div>
+</a>
+<a th:if="${isAuthorized == 'true'}"href="/logout" style="flex:1">
+<div class="menuContent">logout</div>
+</a>
+
+<a th:if="${isAuthorized == 'false'}" th:href="@{/register}"style="flex:1">
+<div class="menuContent">register</div>
+</a>
+<a th:if="${isAuthorized == 'false'}" th:href="@{/login}"style="flex:1">
+<div class="menuContent">login</div>
+</a>
+</div>
+
+</div>
+<p hidden>Image to use:</p>
+<div hidden>
+<img  id="scream" style="height:100%;width:100%"
+src="" alt="The Scream" ></div>
+<p>нужно изображение со сторонами 1:1</p> 
+<p>обрезать его можно на рисунке</p>
+<p>выделите левый верхний и правый нижний края</p>  
+
+   <script>document.getElementById('scream').setAttribute('src','data:image/jpg;base64,'+'[[${img}]]')</script>
+<div class="container">
+<div id="rightside"class="rightside">
+
+</div>
+<div class="leftside">
+<canvas id="myCanvas"
+style="" onclick="bySteps(event)">
+Your browser does not support the HTML5 canvas tag.
+</canvas>
+</div>
+<div id="rightside"class="rightside">
+
+</div>
+</div>
+
+<script>
+var width = document.getElementById('scream').width;
+var height = document.getElementById('scream').height;
+var xM = 1;
+var yM = 1;
+if (width>height){xM=height/width}else{yM=width/height};
+console.log(width,height);
+document.getElementById("myCanvas").setAttribute('height',((300*xM)+"px"));//document.querySelector('#scream').offsetHeight+"px");
+document.getElementById("myCanvas").setAttribute("width",((300*yM)+"px"));//document.querySelector('#scream').offsetWidth+"px");
+window.onload = drawImageScaled();
+
+</script>
+<div id="markX"></div>
+<form action="/cropNsave" method="post" id="nform" hidden>
+<label for="upload">
+      <span class="" aria-hidden="true"></span>
+      <input type="text" id="upload" value="" name="upload" style="display:none">
+</label><br><br>
+<input type="text" id="x1" name="x1" value="">
+<input type="text" id="x2" name="x2" value="">
+<input type="text" id="y1" name="y1" value="">
+<input type="text" id="y2" name="y2" value="">
+<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+</form>
+<script>document.getElementById('upload').setAttribute('value','[[${img}]]')</script>
+</body>
+</html>

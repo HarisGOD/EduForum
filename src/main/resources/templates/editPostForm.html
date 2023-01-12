@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+   		<link rel="stylesheet" href="/awesFont/fa/css/all.css" />
+		<link rel="stylesheet" href="/RTA/richtext.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js">
+		</script>
+		<script src="/RTA/jquery.richtext.min.js"></script>
+<style>
+body {
+  background-color:#333;
+  background-image: url('finishedBG1.png');
+  background-attachment: fixed;
+  background-margin-left:50%;
+}
+.rt{
+width:100%;
+max-width:100%
+} 
+.rt img{
+border: 0;
+height: 300px;
+}
+.content{
+width:100%;
+}
+.name{
+width=80%;margin-left:10%;margin-right:10%;background-color:#F4F4EF;font-size:24px;color:#988558
+}
+.container{
+margin-top:-0px;width=90%;margin-left:10%;margin-right:10%;font-size:18px;color:#373738;display: flex;flex-direction: row
+}
+.leftside{
+background-color: rgba(244, 244, 239, 0.9);flex:3;min-height:800px;max-width:75%
+}
+.rightside{
+  background: repeating-linear-gradient(
+  45deg,
+  #F7F6F4,
+  #F7F6F4 5px,
+  #423 3px,
+  #423 6px
+);
+flex:1;min-height:800px;
+}
+.logo{
+height:120px;
+}
+.fontText{
+font-family: Trebuchet MS, sans-serif, Verdana;
+}
+.menuPart{
+border: 4px double black;flex:1;
+}
+a:link {
+  color: #f4f4ef;
+  text-decoration: none;
+}
+a:visited {
+  color: #f4f4ef;
+  text-decoration: none;
+}
+a:hover {
+  color: #4BC6B9;
+  text-decoration: none;
+}
+a:active {
+  color: #73C1C6;
+  text-decoration: none;
+}
+.menuContent{
+height:72px;background-color:rgba(255,255,255,0.1);text-align:center;font-family: Trebuchet MS, sans-serif, Verdana;
+}
+.menu{
+margin-left:-8px;margin-right:-8px;background-color:#1f1e1e;height:80px;color:#f4f4ef;font-size:20px;display:flex;flex-direction:row;
+
+</style>
+</head>
+<body>
+<div class="menu"style="">
+
+<div class="menuPart" style="flex:1">
+<a th:href="@{/index}">
+<div class="menuContent">edu forum logo</div>
+</a>
+</div>
+
+<div class="menuPart" style="flex:2">
+<a th:href="@{/credits}">
+<div class="menuContent">credits</div>
+</a>
+</div>
+
+<div class="menuPart" style="flex:4">
+<a>
+<div class="menuContent"></div>
+</a>
+</div>
+
+<div class="menuPart" style="flex:1">
+<a href="/posts">
+<div class="menuContent">posts</div>
+</a>
+</div>
+
+<div class="menuPart" style="flex:3;display:flex">
+
+<a th:if="${isAuthorized == 'true'}" th:href="@{/newPost}" style="flex:2">
+<div class="menuContent">newpost</div>
+</a>
+<a th:if="${isAuthorized == 'true'}"href="@{/user}" style="flex:2">
+<div class="menuContent">profile</div>
+</a>
+<a th:if="${isAuthorized == 'true'}"href="/logout" style="flex:1">
+<div class="menuContent">logout</div>
+</a>
+
+<a th:if="${isAuthorized == 'false'}" th:href="@{/register}"style="flex:1">
+<div class="menuContent">register</div>
+</a>
+<a th:if="${isAuthorized == 'false'}" th:href="@{/login}"style="flex:1">
+<div class="menuContent">login</div>
+</a>
+</div>
+
+</div>
+<div style="width=:100%;height:100px;"></div>
+<div class="name"> Hello there! </div>
+<div class="container">
+<div class="leftside">
+
+
+<div class="logo">
+<div style="float:left">
+<h1 style="font-family: Trebuchet MS, sans-serif, Verdana;font-size:95px;color:#423;margin-top:-15px"> Edu</h1>
+<h2 style="font-family: Trebuchet MS, sans-serif, Verdana;font-size:25px;color:#423;margin-top:-80px"> school forum</h2>
+</div>
+<img style="height: 120px; width: 250px; object-fit: contain;margin-left:-90px;margin-top:-10px" src="eduforum-ico.png">
+</div>
+
+
+<p></p>
+      <form class="" method="post" th:action="@{/editpost}">
+        <h2 class="fontText">Write your post here</h2>
+        <p>
+          <label for="name" >name</label>
+          <input type="text" id="name" name="name" placeholder="name"th:value="${postname}">
+        </p>
+        <textarea class="content" name="html" th:text="${content}"></textarea>
+        <input type="hidden" name="oldname" th:value="${oldname}"/>
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        
+        <input type="submit">create new post
+      </form>
+      <script>$('.content').richText({class:"rt"});</script>
+<div style="width=100%;height=10px" ></div>
+</div>
+<div class="rightside">
+
+</div>
+</div>
+
+</body>
+</html>
